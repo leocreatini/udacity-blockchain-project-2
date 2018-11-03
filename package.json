@@ -1,11 +1,13 @@
 {
   "name": "udacity-blockchain-project-2",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "^8"
+  },
   "scripts": {
-    "cleanup": "npx rimraf ./test-chaindata/**",
-    "test": "npx jest && yarn cleanup"
+    "cleanup": "node node_modules/rimraf/bin ./test-chaindata/**",
+    "test": "node node_modules/jest/bin/jest && yarn cleanup"
   },
   "devDependencies": {
     "jest": "^23.6.0",
