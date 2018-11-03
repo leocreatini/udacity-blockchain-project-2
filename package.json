@@ -7,7 +7,7 @@
   },
   "scripts": {
     "cleanup": "node node_modules/rimraf/bin ./test-chaindata/**",
-    "test": "node node_modules/jest/bin/jest && yarn cleanup"
+    "test": "node node_modules/jest/bin/jest && npm run cleanup"
   },
   "devDependencies": {
     "jest": "^23.6.0",
