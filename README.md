@@ -12,50 +12,48 @@ Installing Node and NPM is pretty straightforward using the installer package av
 
 ### Configuring your project
 
-- Use NPM to initialize your project and create package.json to store project dependencies.
+- Use yarn or NPM to install the dependencies
 ```
-npm init
+yarn
 ```
-- Install crypto-js with --save flag to save dependency to our package.json file
+
+or
+
 ```
-npm install crypto-js --save
+npm install
 ```
-- Install level with --save flag
-```
-npm install level --save
-```
+
 
 ## Testing
 
-To test code:
-1: Open a command prompt or shell terminal after install node.js.
-2: Enter a node session, also known as REPL (Read-Evaluate-Print-Loop).
 ```
-node
+yarn test
 ```
-3: Copy and paste your code into your node session
-4: Instantiate blockchain with blockchain variable
+
+or
+
 ```
-let blockchain = new Blockchain();
+npm test
 ```
-5: Generate 10 blocks using a for loop
+
+Should get something like so:
 ```
-for (var i = 0; i <= 10; i++) {
-  blockchain.addBlock(new Block("test data "+i));
-}
+PASS  tests/simpleChain.test.js
+  addBlock()
+    √ should include a method to store newBlock with LevelDB (49ms)
+    √ should persist the Genesis block as the first block in the blockchain using LevelDB (41ms)
+  validateBlock()
+    √ should validate a block stored within levelDB (37ms)
+    √ should validate blockchain stored within levelDB (40ms)
+  getBlock()
+    √ should retrieve a block by block height within the LevelDB chain (40ms)
+  getBlockHeight()
+    √ should retrieve the current block height within the LevelDB chain (50ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        2.24s
+Ran all test suites.
 ```
-6: Validate blockchain
-```
-blockchain.validateChain();
-```
-7: Induce errors by changing block data
-```
-let inducedErrorBlocks = [2,4,7];
-for (var i = 0; i < inducedErrorBlocks.length; i++) {
-  blockchain.chain[inducedErrorBlocks[i]].data='induced chain error';
-}
-```
-8: Validate blockchain. The chain should now fail with blocks 2,4, and 7.
-```
-blockchain.validateChain();
-```
+
