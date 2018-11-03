@@ -15,11 +15,9 @@ Installing Node and NPM is pretty straightforward using the installer package av
 - Use yarn or NPM to install the dependencies
 ```
 yarn
-```
 
-or
+// or
 
-```
 npm install
 ```
 
@@ -28,11 +26,9 @@ npm install
 
 ```
 yarn test
-```
 
-or
+// or
 
-```
 npm test
 ```
 
@@ -56,4 +52,3 @@ Snapshots:   0 total
 Time:        2.24s
 Ran all test suites.
 ```
-
