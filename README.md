@@ -35,15 +35,17 @@ Also, the blockchain object has an `init()` method to create the genesis block.
 - At minimum, you will need to run:
 
 ```js
-const blockchain = new Blockchain('./path/to/create/database');
-
-blockchain.init();
+(async () => {
+// instantiate new blockchain (note that it is asynchronous)
+const blockchain = await new Blockchain('./path/to/create/database');
 
 // now we can add new blocks as needed.
-blockchain.addBlock(new Block('the second block in the chain'));
+await blockchain.addBlock(new Block('the second block in the chain'));
 
 // and check to see that the chain is good.
-blockchain.validateChain();
+await blockchain.validateChain();
+
+})();
 ```
 
 
