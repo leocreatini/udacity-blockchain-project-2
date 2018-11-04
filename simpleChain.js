@@ -1,36 +1,21 @@
-// global imports
-const sha256 = require('crypto-js/sha256');
-
-// local imports
-const { Database } = require('./levelSandbox');
-
 // local imports
 const { GENESIS_BLOCK_DATA } = require('./constants');
+const { Block } = require('./Block');
+const { Database } = require('./levelSandbox');
+const { getCurrentTime, createHash } = require('./utils');
 
-// utils
-const getCurrentTime = () => new Date().getTime().toString().slice(0, -3);
-
-const createHash = block => sha256(JSON.stringify(block)).toString();
-
-/* ===== Block Class ==============================
-|  Class with a constructor for block 			   |
-|  ===============================================*/
-class Block {
-	constructor(data) {
-     this.hash = '',
-     this.height = 0,
-     this.body = data,
-     this.time = 0,
-     this.previousBlockHash = ''
-  }
-}
 
 /* ===== Blockchain Class ==========================
 |  Class with a constructor for new blockchain 		|
 |  ================================================*/
 class Blockchain {
   constructor(dbLocation) {
-    this.chain = new Database(dbLocation);
+    return (async () => {
+      this.chain = new Database(dbLocation);
+      await this.init();
+
+      return this;
+    })();
   }
 
   async init() {
@@ -41,12 +26,12 @@ class Blockchain {
   async addBlock(newBlock) {
     const currentHeight = await this.getBlockHeight();
     // Block height
-    newBlock.height = currentHeight;
+    newBlock.height = currentHeight + 1;
     // UTC timestamp
     newBlock.time = getCurrentTime();
     // previous block hash
     if (currentHeight > 0) {
-      const previousBlock = await this.chain.getValue(currentHeight - 1);
+      const previousBlock = await this.chain.getValue(currentHeight);
       newBlock.previousBlockHash = previousBlock.hash;
     }
     // Block hash with SHA256 using newBlock and converting to a string
@@ -57,7 +42,8 @@ class Blockchain {
 
   // Get block height
   async getBlockHeight() {
-    return await this.chain.getLength();
+    const chainLength = await this.chain.getLength();
+    return chainLength - 1; // height is zero-index, which is one less than length.
   }
 
   // get block
@@ -119,7 +105,4 @@ class Blockchain {
   }
 }
 
-module.exports = {
-  Block,
-  Blockchain,
-};
+exports.Blockchain = Blockchain;

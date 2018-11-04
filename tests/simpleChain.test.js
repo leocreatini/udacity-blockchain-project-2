@@ -1,14 +1,14 @@
 // local imports
 const {  TEST_DATA_DIR, GENESIS_BLOCK_DATA } = require('../constants');
-const { Block, Blockchain } = require('../simpleChain');
+const { Blockchain } = require('../simpleChain');
+const { Block } = require('../Block');
 
 
 describe('addBlock()', async () => {
   it('should include a method to store newBlock with LevelDB', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/1`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/1`);
     const block = new Block('yip yip');
     
-    await blockchain.init();
     await blockchain.addBlock(block);
 
     const result = await blockchain.getBlock(1);
@@ -18,10 +18,9 @@ describe('addBlock()', async () => {
   });
 
   it('should persist the Genesis block as the first block in the blockchain using LevelDB', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/2`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/2`);
     const block = new Block('waka waka');
     
-    await blockchain.init();
     await blockchain.addBlock(block);
 
     const genesisBlock = await blockchain.getBlock(0);
@@ -34,10 +33,9 @@ describe('addBlock()', async () => {
 
 describe('validateBlock()', () => {
   it('should validate a block stored within levelDB', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/3`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/3`);
     const block = new Block('keto neko');
     
-    await blockchain.init();
     await blockchain.addBlock(block);
     
     const result = await blockchain.validateBlock(1);
@@ -47,10 +45,9 @@ describe('validateBlock()', () => {
   });
 
   it('should validate blockchain stored within levelDB', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/4`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/4`);
     const block = new Block('jo jo');
     
-    await blockchain.init();
     await blockchain.addBlock(block);
 
     const result = await blockchain.validateChain();
@@ -62,12 +59,11 @@ describe('validateBlock()', () => {
 
 describe('getBlock()', () => {
   it('should retrieve a block by block height within the LevelDB chain', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/5`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/5`);
     const block1 = new Block('money');
     const block2 = new Block('dinero');
     const block3 = new Block('okane');
     
-    await blockchain.init();
     await blockchain.addBlock(block1);
     await blockchain.addBlock(block2);
     await blockchain.addBlock(block3);
@@ -81,20 +77,19 @@ describe('getBlock()', () => {
 
 describe('getBlockHeight()', () => {
   it('should retrieve the current block height within the LevelDB chain', async () => {
-    const blockchain = new Blockchain(`${TEST_DATA_DIR}/6`);
+    const blockchain = await new Blockchain(`${TEST_DATA_DIR}/6`);
     const block1 = new Block('now');
     const block2 = new Block('das');
     const block3 = new Block('a');
     const block4 = new Block('test');
     
-    await blockchain.init();
     await blockchain.addBlock(block1);
     await blockchain.addBlock(block2);
     await blockchain.addBlock(block3);
     await blockchain.addBlock(block4);
 
     const result = await blockchain.getBlockHeight();
-    const expectation = 5;
+    const expectation = 4;
 
     expect(result).toEqual(expectation);
   });
